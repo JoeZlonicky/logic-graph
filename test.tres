@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="LogicGraphData" load_steps=2 format=3 uid="uid://dq707ov3afulj"]
+
+[ext_resource type="Script" path="res://addons/logic_graph/graph/graph_data.gd" id="1_2q0hs"]
+
+[resource]
+script = ExtResource("1_2q0hs")
+node_data = Array[Resource("res://addons/logic_graph/nodes/node_data.gd")]([])

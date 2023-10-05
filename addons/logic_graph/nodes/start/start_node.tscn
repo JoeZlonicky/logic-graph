@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://dp6lsri4xknmh"]
+
+[ext_resource type="PackedScene" uid="uid://dy4n6vbh386tf" path="res://addons/logic_graph/nodes/node.tscn" id="1_yxuwi"]
+
+[node name="StartNode" instance=ExtResource("1_yxuwi")]
+custom_minimum_size = Vector2(0, 0)
+offset_right = 37.0
+offset_bottom = 23.0
+title = "Start"
+overlay = 2
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+
+[node name="Control" type="Control" parent="." index="0"]
+layout_mode = 2

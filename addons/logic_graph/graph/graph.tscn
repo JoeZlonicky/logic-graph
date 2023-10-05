@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://bi2fukxfut6qo"]
+
+[ext_resource type="Script" path="res://addons/logic_graph/graph/graph.gd" id="1_inlnt"]
+
+[node name="LogicGraph" type="GraphEdit"]
+size_flags_vertical = 3
+right_disconnects = true
+snap_distance = 25
+arrange_nodes_button_hidden = true
+script = ExtResource("1_inlnt")
+
+[connection signal="connection_request" from="." to="." method="_on_connection_request"]
+[connection signal="delete_nodes_request" from="." to="." method="_on_delete_nodes_request"]

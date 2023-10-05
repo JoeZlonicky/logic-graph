@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://c76ududrabvoh"]
+
+[ext_resource type="PackedScene" uid="uid://dy4n6vbh386tf" path="res://addons/logic_graph/nodes/node.tscn" id="1_mpwlw"]
+[ext_resource type="Script" path="res://addons/logic_graph/nodes/dialogue/dialogue.gd" id="2_huhil"]
+
+[node name="DialogueNode" instance=ExtResource("1_mpwlw")]
+custom_minimum_size = Vector2(300, 100)
+title = "Dialogue"
+show_close = true
+resizable = true
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+script = ExtResource("2_huhil")
+
+[node name="TextEdit" type="TextEdit" parent="." index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 20
+placeholder_text = "Dialogue text..."
+wrap_mode = 1
+scroll_fit_content_height = true

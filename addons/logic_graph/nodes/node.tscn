@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://dy4n6vbh386tf"]
+
+[ext_resource type="Script" path="res://addons/logic_graph/nodes/node.gd" id="1_4sxur"]
+
+[node name="LogicGraphNode" type="GraphNode"]
+custom_minimum_size = Vector2(100, 100)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -37.0
+offset_top = -31.0
+offset_right = 181.0
+offset_bottom = 124.0
+grow_horizontal = 2
+grow_vertical = 2
+title = "Node"
+script = ExtResource("1_4sxur")
+
+[connection signal="resize_request" from="." to="." method="_on_resize_request"]
