@@ -26,16 +26,6 @@ func _ready() -> void:
 		button.disabled = true
 
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed:
-		if event.button_index == MOUSE_BUTTON_RIGHT:
-			var mouse_pos: Vector2 = get_viewport().get_mouse_position()
-			var spawn_position: Vector2 = mouse_pos + graph.scroll_offset - graph.global_position
-			spawn_position /= graph.zoom
-			
-			graph.add_node(DIALOGUE_NODE_SCENE, spawn_position)
-
-
 func reset_view() -> void:
 	graph.zoom = 1
 	graph.scroll_offset = Vector2.ZERO
@@ -95,7 +85,16 @@ func trigger_save() -> void:
 
 
 func save_graph(path: String) -> void:
+	# Need to load it like this to get updates to trigger for the cached editor version
+	var res: LogicGraphData = null
+	if ResourceLoader.exists(path):
+		res = ResourceLoader.load(path)
+	else:
+		res = LogicGraphData.new()
+	
 	var graph_data: LogicGraphData = graph.create_save_data()
+	res.node_data = graph_data.node_data
+	
 	var result: Error = ResourceSaver.save(graph_data, path)
 	if result != Error.OK:
 		print("Error saving logic graph")
@@ -107,3 +106,13 @@ func save_graph(path: String) -> void:
 
 func _on_save_as_button_pressed() -> void:
 	save_dialog.popup_centered()
+
+
+func _on_graph_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_RIGHT:
+			var mouse_pos: Vector2 = get_viewport().get_mouse_position()
+			var spawn_position: Vector2 = mouse_pos + graph.scroll_offset - graph.global_position
+			spawn_position /= graph.zoom
+			
+			graph.add_node(DIALOGUE_NODE_SCENE, spawn_position)

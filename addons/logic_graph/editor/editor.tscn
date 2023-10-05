@@ -64,6 +64,7 @@ text = "Load"
 [node name="SaveButton" type="Button" parent="VBoxContainer/Banner/MarginContainer/Buttons"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+disabled = true
 text = "Save"
 
 [node name="SaveDialog" type="FileDialog" parent="VBoxContainer/Banner/MarginContainer/Buttons/SaveButton"]
@@ -75,6 +76,7 @@ filters = PackedStringArray("*.tres")
 [node name="SaveAsButton" type="Button" parent="VBoxContainer/Banner/MarginContainer/Buttons"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+disabled = true
 text = "Save As"
 
 [node name="SaveAsDialog" type="FileDialog" parent="VBoxContainer/Banner/MarginContainer/Buttons/SaveAsButton"]
@@ -83,13 +85,14 @@ size = Vector2i(312, 157)
 [node name="ClearButton" type="Button" parent="VBoxContainer/Banner/MarginContainer/Buttons"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
+disabled = true
 text = "Clear"
 
 [node name="ConfirmClearDialog" type="ConfirmationDialog" parent="VBoxContainer/Banner/MarginContainer/Buttons/ClearButton"]
 unique_name_in_owner = true
 size = Vector2i(692, 83)
 unresizable = true
-dialog_text = "Are you sure you want to clear this LogicGraph? Any unsaved changes will be discarded!"
+dialog_text = "Are you sure you want to clear this LogicGraph? Any unsaved changes will be lost forever!"
 
 [node name="Control" type="Control" parent="VBoxContainer/Banner/MarginContainer/Buttons"]
 layout_mode = 2
@@ -101,6 +104,7 @@ layout_mode = 2
 
 [node name="Graph" parent="VBoxContainer" instance=ExtResource("2_wyndc")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [connection signal="pressed" from="VBoxContainer/Banner/MarginContainer/Buttons/NewGraphButton" to="." method="_on_new_graph_button_pressed"]
@@ -111,4 +115,4 @@ layout_mode = 2
 [connection signal="pressed" from="VBoxContainer/Banner/MarginContainer/Buttons/SaveAsButton" to="." method="_on_save_as_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/Banner/MarginContainer/Buttons/ClearButton" to="." method="_on_clear_button_pressed"]
 [connection signal="confirmed" from="VBoxContainer/Banner/MarginContainer/Buttons/ClearButton/ConfirmClearDialog" to="." method="_on_confirm_clear_dialog_confirmed"]
-[connection signal="resize_request" from="VBoxContainer/Graph/StartNode" to="VBoxContainer/Graph/StartNode" method="_on_resize_request" flags=18]
+[connection signal="gui_input" from="VBoxContainer/Graph" to="." method="_on_graph_gui_input"]

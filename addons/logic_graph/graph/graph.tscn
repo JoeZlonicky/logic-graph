@@ -11,3 +11,4 @@ script = ExtResource("1_inlnt")
 
 [connection signal="connection_request" from="." to="." method="_on_connection_request"]
 [connection signal="delete_nodes_request" from="." to="." method="_on_delete_nodes_request"]
+[connection signal="disconnection_request" from="." to="." method="_on_disconnection_request"]
