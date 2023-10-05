@@ -20,7 +20,7 @@ func _exit_tree():
 
 func _save_external_data() -> void:
 	if editor_instance != null:
-		editor_instance.auto_save()
+		editor_instance.trigger_save()
 
 
 func _has_main_screen() -> bool:

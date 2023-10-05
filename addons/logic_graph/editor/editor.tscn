@@ -60,18 +60,18 @@ layout_mode = 2
 text = "Load"
 
 [node name="LoadDialog" type="FileDialog" parent="VBoxContainer/Banner/MarginContainer/Buttons/LoadButton"]
+unique_name_in_owner = true
+title = "Open a File"
+size = Vector2i(400, 500)
+ok_button_text = "Open"
+file_mode = 0
+filters = PackedStringArray("*.tres")
 
 [node name="SaveButton" type="Button" parent="VBoxContainer/Banner/MarginContainer/Buttons"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 disabled = true
 text = "Save"
-
-[node name="SaveDialog" type="FileDialog" parent="VBoxContainer/Banner/MarginContainer/Buttons/SaveButton"]
-unique_name_in_owner = true
-title = "Save graph..."
-size = Vector2i(400, 500)
-filters = PackedStringArray("*.tres")
 
 [node name="SaveAsButton" type="Button" parent="VBoxContainer/Banner/MarginContainer/Buttons"]
 custom_minimum_size = Vector2(100, 0)
@@ -80,7 +80,10 @@ disabled = true
 text = "Save As"
 
 [node name="SaveAsDialog" type="FileDialog" parent="VBoxContainer/Banner/MarginContainer/Buttons/SaveAsButton"]
-size = Vector2i(312, 157)
+unique_name_in_owner = true
+title = "Save as..."
+size = Vector2i(400, 500)
+filters = PackedStringArray("*.tres")
 
 [node name="ClearButton" type="Button" parent="VBoxContainer/Banner/MarginContainer/Buttons"]
 custom_minimum_size = Vector2(100, 0)
@@ -110,9 +113,11 @@ layout_mode = 2
 [connection signal="pressed" from="VBoxContainer/Banner/MarginContainer/Buttons/NewGraphButton" to="." method="_on_new_graph_button_pressed"]
 [connection signal="confirmed" from="VBoxContainer/Banner/MarginContainer/Buttons/NewGraphButton/NewGraphConfirmDiscardDialog" to="." method="_on_confirm_new_graph_dialog_confirmed"]
 [connection signal="file_selected" from="VBoxContainer/Banner/MarginContainer/Buttons/NewGraphButton/CreateGraphDialog" to="." method="_on_create_graph_dialog_file_selected"]
+[connection signal="pressed" from="VBoxContainer/Banner/MarginContainer/Buttons/LoadButton" to="." method="_on_load_button_pressed"]
+[connection signal="file_selected" from="VBoxContainer/Banner/MarginContainer/Buttons/LoadButton/LoadDialog" to="." method="_on_load_dialog_file_selected"]
 [connection signal="pressed" from="VBoxContainer/Banner/MarginContainer/Buttons/SaveButton" to="." method="_on_save_button_pressed"]
-[connection signal="file_selected" from="VBoxContainer/Banner/MarginContainer/Buttons/SaveButton/SaveDialog" to="." method="_on_save_dialog_file_selected"]
 [connection signal="pressed" from="VBoxContainer/Banner/MarginContainer/Buttons/SaveAsButton" to="." method="_on_save_as_button_pressed"]
+[connection signal="file_selected" from="VBoxContainer/Banner/MarginContainer/Buttons/SaveAsButton/SaveAsDialog" to="." method="_on_save_as_dialog_file_selected"]
 [connection signal="pressed" from="VBoxContainer/Banner/MarginContainer/Buttons/ClearButton" to="." method="_on_clear_button_pressed"]
 [connection signal="confirmed" from="VBoxContainer/Banner/MarginContainer/Buttons/ClearButton/ConfirmClearDialog" to="." method="_on_confirm_clear_dialog_confirmed"]
 [connection signal="gui_input" from="VBoxContainer/Graph" to="." method="_on_graph_gui_input"]

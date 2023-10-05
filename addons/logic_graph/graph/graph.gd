@@ -11,9 +11,15 @@ var current_node: LogicGraphNode = null
 var node_map: Dictionary = {}  # StringName : LogicGraphNode
 
 
-func add_node(node_scene: PackedScene, position_offset: Vector2 = Vector2.ZERO) -> LogicGraphNode:
+func add_node(node_scene: PackedScene, position_offset: Vector2 = Vector2.ZERO, 
+		name_override: String = "") -> LogicGraphNode:
+	
 	var node: LogicGraphNode = node_scene.instantiate()
 	add_child(node)
+	if name_override == "":
+		node.name = "Node" + str(node_map.size() + 1)
+	else:
+		node.name = name_override
 	node_map[node.name] = node
 	node.position_offset = position_offset
 	node.close_request.connect(_on_delete_nodes_request.bind([node.name]))
@@ -63,6 +69,7 @@ func transition(to: StringName) -> void:
 
 
 func create_save_data() -> LogicGraphData:
+	print("Creating save data...")
 	var data = LogicGraphData.new()
 	for child in get_children():
 		if child is LogicGraphNode:
@@ -71,7 +78,10 @@ func create_save_data() -> LogicGraphData:
 			
 			node_data.name = child.name
 			node_data.position_offset = child.position_offset
-			node_data.type_uid = ResourceLoader.get_resource_uid(scene_path)
+			node_data.size = child.size
+			
+			var scene_path_uid: int = ResourceLoader.get_resource_uid(scene_path)
+			node_data.type_uid_path = ResourceUID.id_to_text(scene_path_uid)
 			node_data.custom_data = child.get_save_data()
 			node_data.out_connections = child.outward_connections.duplicate()
 			data.node_data.append(node_data)
@@ -79,9 +89,26 @@ func create_save_data() -> LogicGraphData:
 	return data
 
 
-func load_from_data(data: LogicGraphData):
-	pass
-
+func load_from_data(data: LogicGraphData) -> void:
+	print("Loading data...")
+	clear_all_nodes_and_connections()
+	
+	for node_data in data.node_data:
+		print("Loading node")
+		var packed_scene = load(node_data.type_uid_path) as PackedScene
+		var node: LogicGraphNode = add_node(packed_scene, node_data.position_offset,
+			node_data.name)
+		node.size = node_data.size
+		node.load_save_data(node_data.custom_data)
+		if node is LogicGraphStartNode:
+			start_node = node
+	
+	print("Re-creating connections...")
+	for node_data in data.node_data:
+		for c in node_data.out_connections:
+			connect_node(node_data.name, c.from_port, c.to_node, c.to_port)
+	
+	print("Load done")
 
 func _remove_all_connections_to_node(node_name: StringName) -> void:
 	for c in get_connection_list():

@@ -10,10 +10,11 @@ var open_file_path: String = ""
 @onready var confirm_clear_dialog: ConfirmationDialog = %ConfirmClearDialog
 @onready var new_graph_confirm_discard_dialog: ConfirmationDialog = %NewGraphConfirmDiscardDialog
 @onready var create_graph_dialog: FileDialog = %CreateGraphDialog
-@onready var save_dialog: FileDialog = %SaveDialog
+@onready var save_as_dialog: FileDialog = %SaveAsDialog
 @onready var open_file_label: Label = %OpenFileLabel
+@onready var load_dialog: FileDialog = %LoadDialog
 
-@onready var buttons_that_started_disabled: Array = [
+@onready var buttons_that_start_disabled: Array = [
 	$VBoxContainer/Banner/MarginContainer/Buttons/SaveButton,
 	$VBoxContainer/Banner/MarginContainer/Buttons/SaveAsButton,
 	$VBoxContainer/Banner/MarginContainer/Buttons/ClearButton
@@ -21,14 +22,24 @@ var open_file_path: String = ""
 
 
 func _ready() -> void:
-	graph.hide()
-	for button in buttons_that_started_disabled:
-		button.disabled = true
+	disable_graph()
 
 
 func reset_view() -> void:
 	graph.zoom = 1
 	graph.scroll_offset = Vector2.ZERO
+
+
+func disable_graph() -> void:
+	graph.hide()
+	for button in buttons_that_start_disabled:
+		button.disabled = true
+
+
+func enable_graph() -> void:
+	graph.show()
+	for button in buttons_that_start_disabled:
+		button.disabled = false
 
 
 func _on_clear_button_pressed() -> void:
@@ -56,9 +67,7 @@ func _on_create_graph_dialog_file_selected(path: String) -> void:
 	open_file_label.text = path
 	graph.clear_all_nodes_and_connections()
 	graph.add_start_node()
-	graph.show()
-	for button in buttons_that_started_disabled:
-		button.disabled = false
+	enable_graph()
 	reset_view()
 
 
@@ -66,22 +75,13 @@ func _on_save_button_pressed() -> void:
 	trigger_save()
 
 
-func _on_save_dialog_file_selected(path: String) -> void:
+func _on_save_as_dialog_file_selected(path: String) -> void:
 	save_graph(path)
 
 
-func auto_save() -> void:
-	if graph.get_child_count() == 1:  # Don't auto save just start node
-		return
-	
-	#trigger_save()
-
-
 func trigger_save() -> void:
-	if open_file_path != "":
+	if graph.visible:
 		save_graph(open_file_path)
-	else:
-		save_dialog.popup_centered()
 
 
 func save_graph(path: String) -> void:
@@ -104,8 +104,20 @@ func save_graph(path: String) -> void:
 		print("Logic graph saved")
 
 
+func load_graph(path: String) -> void:
+	var res: LogicGraphData = load(path)
+	if res != null:
+		graph.load_from_data(res)
+		open_file_path = path
+		open_file_label.text = path.get_file()
+		enable_graph()
+		reset_view()
+	else:
+		print("Failed to load logic graph")
+
+
 func _on_save_as_button_pressed() -> void:
-	save_dialog.popup_centered()
+	save_as_dialog.popup_centered()
 
 
 func _on_graph_gui_input(event: InputEvent) -> void:
@@ -116,3 +128,11 @@ func _on_graph_gui_input(event: InputEvent) -> void:
 			spawn_position /= graph.zoom
 			
 			graph.add_node(DIALOGUE_NODE_SCENE, spawn_position)
+
+
+func _on_load_button_pressed() -> void:
+	load_dialog.popup_centered()
+
+
+func _on_load_dialog_file_selected(path: String) -> void:
+	load_graph(path)
