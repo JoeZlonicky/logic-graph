@@ -1,0 +1,53 @@
+[gd_scene load_steps=4 format=3 uid="uid://cy2ne6mqu7hbb"]
+
+[ext_resource type="Script" path="res://game.gd" id="1_5q0kq"]
+[ext_resource type="Script" path="res://addons/logic_graph/container/logic_graph_container.gd" id="2_v2weu"]
+[ext_resource type="Resource" uid="uid://cpe7job7732nx" path="res://test.tres" id="3_rawr8"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_5q0kq")
+
+[node name="Dialogue" type="CanvasLayer" parent="."]
+
+[node name="Background" type="ColorRect" parent="Dialogue"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.25098, 0.270588, 0.368627, 1)
+
+[node name="Panel" type="Panel" parent="Dialogue"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -156.0
+offset_top = -43.5
+offset_right = 156.0
+offset_bottom = 43.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Dialogue/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="DialogueLabel" type="Label" parent="Dialogue/Panel/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+visible_characters_behavior = 1
+
+[node name="LogicGraphContainer" type="Node" parent="."]
+script = ExtResource("2_v2weu")
+data = ExtResource("3_rawr8")

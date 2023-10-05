@@ -6,9 +6,18 @@ extends GraphEdit
 const START_NODE_SCENE: PackedScene = preload("res://addons/logic_graph/nodes/start/start_node.tscn")
 const START_NODE_DEFAULT_POSITION = Vector2(200, 250)
 
+@export var data: LogicGraphData = null
+
 var start_node: LogicGraphNode = null
 var current_node: LogicGraphNode = null
 var node_map: Dictionary = {}  # StringName : LogicGraphNode
+
+
+func _ready() -> void:
+	if Engine.is_editor_hint() or data == null:
+		return
+	
+	load_from_data(data)
 
 
 func add_node(node_scene: PackedScene, position_offset: Vector2 = Vector2.ZERO, 
@@ -52,6 +61,7 @@ func clear_all_nodes_and_connections() -> void:
 
 
 func start() -> void:
+	print("Running graph")
 	transition(start_node.name)
 
 
@@ -60,6 +70,7 @@ func end() -> void:
 
 
 func transition(to: StringName) -> void:
+	print("Transition to: " + to)
 	if current_node != null:
 		current_node.on_exit()
 	
@@ -100,6 +111,7 @@ func load_from_data(data: LogicGraphData) -> void:
 			node_data.name)
 		node.size = node_data.size
 		node.load_save_data(node_data.custom_data)
+		node.outward_connections = node_data.out_connections.duplicate()
 		if node is LogicGraphStartNode:
 			start_node = node
 	

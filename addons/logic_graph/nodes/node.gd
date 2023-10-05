@@ -22,6 +22,16 @@ func load_save_data(data: Dictionary) -> void:
 	pass
 
 
+func get_graph() -> LogicGraph:
+	return get_parent() as LogicGraph
+
+
+func get_first_connection() -> StringName:
+	if outward_connections.is_empty():
+		return ""
+	return outward_connections.front().to_node
+
+
 func _on_resize_request(new_minsize: Vector2) -> void:
 	size = new_minsize
 
