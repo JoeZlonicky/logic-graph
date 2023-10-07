@@ -1,20 +1,18 @@
 @tool
+class_name LogicGraphEditorNewButton
 extends Button
 
 
 signal path_chosen(path: String)
 
-@export var graph: LogicGraph = null
+@export var should_confirm: bool = false
 
 @onready var confirm_discard_dialog: ConfirmationDialog = %ConfirmDiscardDialog
 @onready var create_graph_dialog: FileDialog = %CreateGraphDialog
 
 
 func _on_pressed() -> void:
-	if graph == null:
-		return
-	
-	if graph.visible:
+	if should_confirm:
 		confirm_discard_dialog.popup_centered()
 	else:
 		create_graph_dialog.popup_centered()

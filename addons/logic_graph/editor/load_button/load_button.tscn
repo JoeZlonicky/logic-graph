@@ -6,6 +6,12 @@
 text = "Load"
 script = ExtResource("1_u62l0")
 
+[node name="ConfirmDiscardDialog" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+size = Vector2i(708, 83)
+unresizable = true
+dialog_text = "Are you sure you want to load a new logic graph? Any unsaved changes will be discarded!"
+
 [node name="LoadDialog" type="FileDialog" parent="."]
 unique_name_in_owner = true
 title = "Open a File"
@@ -15,4 +21,5 @@ file_mode = 0
 filters = PackedStringArray("*.tres")
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="confirmed" from="ConfirmDiscardDialog" to="." method="_on_confirm_discard_dialog_confirmed"]
 [connection signal="file_selected" from="LoadDialog" to="." method="_on_load_dialog_file_selected"]

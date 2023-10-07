@@ -35,11 +35,12 @@ layout_mode = 2
 [node name="Buttons" type="HBoxContainer" parent="VBoxContainer/Banner"]
 layout_mode = 2
 
-[node name="NewGraphButton" parent="VBoxContainer/Banner/Buttons" node_paths=PackedStringArray("graph") instance=ExtResource("2_is6tq")]
+[node name="NewGraphButton" parent="VBoxContainer/Banner/Buttons" instance=ExtResource("2_is6tq")]
+unique_name_in_owner = true
 layout_mode = 2
-graph = NodePath("../../../Graph")
 
 [node name="LoadButton" parent="VBoxContainer/Banner/Buttons" instance=ExtResource("3_a7ncv")]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="SaveButton" type="Button" parent="VBoxContainer/Banner/Buttons"]

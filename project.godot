@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 Globals="*res://globals.gd"
 
+[display]
+
+window/vsync/vsync_mode=0
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/logic_graph/plugin.cfg", "res://addons/plugin_refresher/plugin.cfg")

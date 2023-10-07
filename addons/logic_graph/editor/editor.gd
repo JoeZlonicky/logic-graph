@@ -6,9 +6,12 @@ extends Control
 const DIALOGUE_NODE_SCENE: PackedScene = preload("res://addons/logic_graph/nodes/dialogue/dialogue.tscn")
 
 var open_file_path: String = ""
+var has_unsaved_changes: bool = false
 
 @onready var graph: LogicGraph = %Graph
 
+@onready var new_graph_button: LogicGraphEditorNewButton = %NewGraphButton
+@onready var load_button: LogicGraphEditorLoadButton = %LoadButton
 @onready var open_file_label: Label = %OpenFileLabel
 @onready var save_failed_dialog: AcceptDialog = %SaveFailedDialog
 @onready var load_failed_dialog: AcceptDialog = %LoadFailedDialog
@@ -37,6 +40,8 @@ func _on_graph_gui_input(event: InputEvent) -> void:
 
 func set_graph_enabled(enable: bool = true) -> void:
 	graph.visible = enable
+	new_graph_button.should_confirm = enable
+	load_button.should_confirm = enable
 	for button in enable_only_for_active_graph:
 		button.disabled = !enable
 
@@ -49,6 +54,7 @@ func reset_view() -> void:
 func reset_graph() -> void:
 	graph.clear_all_nodes_and_connections()
 	graph.add_start_node()
+	mark_unsaved_changes()
 
 
 func new_graph(path: String) -> void:
@@ -64,7 +70,7 @@ func save_open_graph() -> void:
 
 
 func save_graph(path: String) -> void:
-	# Need to load it like this to get updates to trigger for the cached editor version
+	# Need to load it like this to get cached resource to update in editor
 	var res: LogicGraphData = null
 	if ResourceLoader.exists(path):
 		res = ResourceLoader.load(path)
@@ -84,7 +90,7 @@ func save_graph(path: String) -> void:
 
 
 func load_graph(path: String) -> void:
-	var res: LogicGraphData = load(path)
+	var res: LogicGraphData = load(path) as LogicGraphData
 	if res == null:
 		load_failed_dialog.popup_centered()
 		return
@@ -93,11 +99,16 @@ func load_graph(path: String) -> void:
 	_set_open_file_path(path)
 	set_graph_enabled(true)
 	reset_view()
+	print("Loaded logic graph")
 
 
 func close_graph() -> void:
 	reset_graph()
 	set_graph_enabled(false)
+
+
+func mark_unsaved_changes() -> void:
+	open_file_label.text = "*" + open_file_label.text
 
 
 func _set_open_file_path(path: String) -> void:

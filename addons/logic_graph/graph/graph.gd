@@ -4,25 +4,15 @@ extends GraphEdit
 
 
 const START_NODE_SCENE: PackedScene = preload("res://addons/logic_graph/nodes/start/start_node.tscn")
-const START_NODE_DEFAULT_POSITION = Vector2(200, 250)
-
-@export var data: LogicGraphData = null
+const START_NODE_DEFAULT_POSITION := Vector2(200, 250)
 
 var start_node: LogicGraphNode = null
 var current_node: LogicGraphNode = null
 var node_map: Dictionary = {}  # StringName : LogicGraphNode
 
 
-func _ready() -> void:
-	if Engine.is_editor_hint() or data == null:
-		return
-	
-	load_from_data(data)
-
-
 func add_node(node_scene: PackedScene, position_offset: Vector2 = Vector2.ZERO, 
 		name_override: String = "") -> LogicGraphNode:
-	
 	var node: LogicGraphNode = node_scene.instantiate()
 	add_child(node)
 	if name_override == "":

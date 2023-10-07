@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cy2ne6mqu7hbb"]
+[gd_scene load_steps=3 format=3 uid="uid://cy2ne6mqu7hbb"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_5q0kq"]
+[ext_resource type="Script" path="res://addons/logic_graph/container/logic_graph_container.gd" id="2_m8aqc"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_5q0kq")
@@ -45,3 +46,14 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 visible_characters_behavior = 1
+
+[node name="LogicGraphContainer" type="CanvasLayer" parent="."]
+script = ExtResource("2_m8aqc")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="FPSLabel" type="Label" parent="CanvasLayer"]
+unique_name_in_owner = true
+offset_right = 40.0
+offset_bottom = 26.0
+text = "FPS"

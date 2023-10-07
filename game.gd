@@ -13,6 +13,7 @@ var timer: float = 0.0
 @onready var dialogue_panel: Panel = $Dialogue/Panel
 @onready var dialogue_label: Label = %DialogueLabel
 @onready var graph_container: LogicGraphContainer = $LogicGraphContainer
+@onready var fps_label: Label = %FPSLabel
 
 
 func _ready() -> void:
@@ -21,6 +22,8 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	fps_label.text = str(Engine.get_frames_per_second())
+	
 	if is_current_finished == true:
 		return
 	
