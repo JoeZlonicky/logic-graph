@@ -1,8 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://cy2ne6mqu7hbb"]
+[gd_scene load_steps=2 format=3 uid="uid://cy2ne6mqu7hbb"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_5q0kq"]
-[ext_resource type="Script" path="res://addons/logic_graph/container/logic_graph_container.gd" id="2_v2weu"]
-[ext_resource type="Resource" uid="uid://cpe7job7732nx" path="res://test.tres" id="3_rawr8"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_5q0kq")
@@ -47,7 +45,3 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 visible_characters_behavior = 1
-
-[node name="LogicGraphContainer" type="Node" parent="."]
-script = ExtResource("2_v2weu")
-data = ExtResource("3_rawr8")

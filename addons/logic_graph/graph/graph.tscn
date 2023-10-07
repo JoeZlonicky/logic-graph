@@ -3,6 +3,11 @@
 [ext_resource type="Script" path="res://addons/logic_graph/graph/graph.gd" id="1_inlnt"]
 
 [node name="LogicGraph" type="GraphEdit"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_vertical = 3
 right_disconnects = true
 snap_distance = 25

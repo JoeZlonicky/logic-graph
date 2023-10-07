@@ -2,9 +2,9 @@
 extends EditorPlugin
 
 
-const EDITOR_SCENE = preload("res://addons/logic_graph/editor/editor.tscn")
+const EDITOR_SCENE: PackedScene = preload("res://addons/logic_graph/editor/editor.tscn")
 
-var editor_instance: Control = null
+var editor_instance: LogicGraphEditor = null
 
 
 func _enter_tree():
@@ -20,7 +20,7 @@ func _exit_tree():
 
 func _save_external_data() -> void:
 	if editor_instance != null:
-		editor_instance.trigger_save()
+		editor_instance.save_open_graph()
 
 
 func _has_main_screen() -> bool:
@@ -37,4 +37,4 @@ func _get_plugin_name():
 
 
 func _get_plugin_icon():
-	return get_editor_interface().get_base_control().get_theme_icon("Control", "EditorIcons")
+	return get_editor_interface().get_base_control().get_theme_icon("GraphNode", "EditorIcons")

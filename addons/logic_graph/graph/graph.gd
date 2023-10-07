@@ -61,7 +61,6 @@ func clear_all_nodes_and_connections() -> void:
 
 
 func start() -> void:
-	print("Running graph")
 	transition(start_node.name)
 
 
@@ -70,7 +69,6 @@ func end() -> void:
 
 
 func transition(to: StringName) -> void:
-	print("Transition to: " + to)
 	if current_node != null:
 		current_node.on_exit()
 	
@@ -80,7 +78,6 @@ func transition(to: StringName) -> void:
 
 
 func create_save_data() -> LogicGraphData:
-	print("Creating save data...")
 	var data = LogicGraphData.new()
 	for child in get_children():
 		if child is LogicGraphNode:
@@ -101,11 +98,9 @@ func create_save_data() -> LogicGraphData:
 
 
 func load_from_data(data: LogicGraphData) -> void:
-	print("Loading data...")
 	clear_all_nodes_and_connections()
 	
 	for node_data in data.node_data:
-		print("Loading node")
 		var packed_scene = load(node_data.type_uid_path) as PackedScene
 		var node: LogicGraphNode = add_node(packed_scene, node_data.position_offset,
 			node_data.name)
@@ -115,12 +110,10 @@ func load_from_data(data: LogicGraphData) -> void:
 		if node is LogicGraphStartNode:
 			start_node = node
 	
-	print("Re-creating connections...")
 	for node_data in data.node_data:
 		for c in node_data.out_connections:
 			connect_node(node_data.name, c.from_port, c.to_node, c.to_port)
-	
-	print("Load done")
+
 
 func _remove_all_connections_to_node(node_name: StringName) -> void:
 	for c in get_connection_list():
@@ -140,6 +133,9 @@ func _on_delete_nodes_request(nodes: Array) -> void:
 
 func _on_connection_request(from_node: StringName, from_port: int, to_node: StringName,
 		to_port: int) -> void:
+	if from_node == to_node:
+		return
+	
 	connect_node(from_node, from_port, to_node, to_port)
 	var node: LogicGraphNode = node_map[from_node]
 	node.add_outward_connection(from_port, to_node, to_port)

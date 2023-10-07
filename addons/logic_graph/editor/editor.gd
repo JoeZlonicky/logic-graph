@@ -1,4 +1,5 @@
 @tool
+class_name LogicGraphEditor
 extends Control
 
 
@@ -7,22 +8,37 @@ const DIALOGUE_NODE_SCENE: PackedScene = preload("res://addons/logic_graph/nodes
 var open_file_path: String = ""
 
 @onready var graph: LogicGraph = %Graph
-@onready var confirm_clear_dialog: ConfirmationDialog = %ConfirmClearDialog
-@onready var new_graph_confirm_discard_dialog: ConfirmationDialog = %NewGraphConfirmDiscardDialog
-@onready var create_graph_dialog: FileDialog = %CreateGraphDialog
-@onready var save_as_dialog: FileDialog = %SaveAsDialog
-@onready var open_file_label: Label = %OpenFileLabel
-@onready var load_dialog: FileDialog = %LoadDialog
 
-@onready var buttons_that_start_disabled: Array = [
-	$VBoxContainer/Banner/MarginContainer/Buttons/SaveButton,
-	$VBoxContainer/Banner/MarginContainer/Buttons/SaveAsButton,
-	$VBoxContainer/Banner/MarginContainer/Buttons/ClearButton
+@onready var open_file_label: Label = %OpenFileLabel
+@onready var save_failed_dialog: AcceptDialog = %SaveFailedDialog
+@onready var load_failed_dialog: AcceptDialog = %LoadFailedDialog
+
+@onready var enable_only_for_active_graph: Array = [
+	%SaveButton,
+	%SaveAsButton,
+	%ClearButton,
+	%CloseGraphButton
 ]
 
 
 func _ready() -> void:
-	disable_graph()
+	set_graph_enabled(false)
+
+
+func _on_graph_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_RIGHT:
+			var mouse_pos: Vector2 = get_viewport().get_mouse_position()
+			var spawn_position: Vector2 = mouse_pos + graph.scroll_offset - graph.global_position
+			spawn_position /= graph.zoom
+			
+			graph.add_node(DIALOGUE_NODE_SCENE, spawn_position)
+
+
+func set_graph_enabled(enable: bool = true) -> void:
+	graph.visible = enable
+	for button in enable_only_for_active_graph:
+		button.disabled = !enable
 
 
 func reset_view() -> void:
@@ -30,56 +46,19 @@ func reset_view() -> void:
 	graph.scroll_offset = Vector2.ZERO
 
 
-func disable_graph() -> void:
-	graph.hide()
-	for button in buttons_that_start_disabled:
-		button.disabled = true
-
-
-func enable_graph() -> void:
-	graph.show()
-	for button in buttons_that_start_disabled:
-		button.disabled = false
-
-
-func _on_clear_button_pressed() -> void:
-	confirm_clear_dialog.popup_centered()
-
-
-func _on_confirm_clear_dialog_confirmed() -> void:
+func reset_graph() -> void:
 	graph.clear_all_nodes_and_connections()
 	graph.add_start_node()
 
 
-func _on_new_graph_button_pressed() -> void:
-	if graph.visible:
-		new_graph_confirm_discard_dialog.popup_centered()
-	else:
-		create_graph_dialog.popup_centered()
-
-
-func _on_confirm_new_graph_dialog_confirmed() -> void:
-	create_graph_dialog.popup_centered()
-
-
-func _on_create_graph_dialog_file_selected(path: String) -> void:
-	open_file_path = path
-	open_file_label.text = path
-	graph.clear_all_nodes_and_connections()
-	graph.add_start_node()
-	enable_graph()
+func new_graph(path: String) -> void:
+	_set_open_file_path(path)
+	reset_graph()
 	reset_view()
+	set_graph_enabled(true)
 
 
-func _on_save_button_pressed() -> void:
-	trigger_save()
-
-
-func _on_save_as_dialog_file_selected(path: String) -> void:
-	save_graph(path)
-
-
-func trigger_save() -> void:
+func save_open_graph() -> void:
 	if graph.visible:
 		save_graph(open_file_path)
 
@@ -96,43 +75,31 @@ func save_graph(path: String) -> void:
 	res.node_data = graph_data.node_data
 	
 	var result: Error = ResourceSaver.save(graph_data, path)
-	if result != Error.OK:
-		print("Error saving logic graph")
-	else:
-		open_file_path = path
-		open_file_label.text = path.get_file()
-		print("Logic graph saved")
+	if result != OK:
+		save_failed_dialog.popup_centered()
+		return
+	
+	_set_open_file_path(path)
+	print("Saved logic graph")
 
 
 func load_graph(path: String) -> void:
 	var res: LogicGraphData = load(path)
-	if res != null:
-		graph.load_from_data(res)
-		open_file_path = path
-		open_file_label.text = path.get_file()
-		enable_graph()
-		reset_view()
-	else:
-		print("Failed to load logic graph")
+	if res == null:
+		load_failed_dialog.popup_centered()
+		return
+	
+	graph.load_from_data(res)
+	_set_open_file_path(path)
+	set_graph_enabled(true)
+	reset_view()
 
 
-func _on_save_as_button_pressed() -> void:
-	save_as_dialog.popup_centered()
+func close_graph() -> void:
+	reset_graph()
+	set_graph_enabled(false)
 
 
-func _on_graph_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed:
-		if event.button_index == MOUSE_BUTTON_RIGHT:
-			var mouse_pos: Vector2 = get_viewport().get_mouse_position()
-			var spawn_position: Vector2 = mouse_pos + graph.scroll_offset - graph.global_position
-			spawn_position /= graph.zoom
-			
-			graph.add_node(DIALOGUE_NODE_SCENE, spawn_position)
-
-
-func _on_load_button_pressed() -> void:
-	load_dialog.popup_centered()
-
-
-func _on_load_dialog_file_selected(path: String) -> void:
-	load_graph(path)
+func _set_open_file_path(path: String) -> void:
+	open_file_path = path
+	open_file_label.text = path.get_file()

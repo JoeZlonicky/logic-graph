@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1nao5m28hg0d"]
+
+[ext_resource type="Script" path="res://addons/logic_graph/editor/clear_button/clear_button.gd" id="1_05uxn"]
+
+[node name="ClearButton" type="Button"]
+disabled = true
+text = "Clear"
+script = ExtResource("1_05uxn")
+
+[node name="ConfirmDialog" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+size = Vector2i(692, 83)
+unresizable = true
+dialog_text = "Are you sure you want to clear this logic graph? Any unsaved changes will be lost forever!"
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="confirmed" from="ConfirmDialog" to="." method="_on_confirm_dialog_confirmed"]

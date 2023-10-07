@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://bbsontw3yp5dc"]
+
+[ext_resource type="Script" path="res://addons/logic_graph/editor/save_as_button/save_as_button.gd" id="1_cqf6f"]
+
+[node name="SaveAsButton" type="Button"]
+disabled = true
+text = "Save As"
+script = ExtResource("1_cqf6f")
+
+[node name="SaveAsDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+title = "Save As"
+size = Vector2i(500, 500)
+filters = PackedStringArray("*.tres")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="file_selected" from="SaveAsDialog" to="." method="_on_save_as_dialog_file_selected"]

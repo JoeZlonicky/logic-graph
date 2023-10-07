@@ -1,5 +1,5 @@
 class_name LogicGraphContainer
-extends Node
+extends CanvasLayer
 
 
 const LOGIC_GRAPH_SCENE: PackedScene = preload("res://addons/logic_graph/graph/graph.tscn")
@@ -20,5 +20,5 @@ func _ready() -> void:
 
 
 func run() -> void:
-	if graph:
+	if graph != null:
 		graph.start()

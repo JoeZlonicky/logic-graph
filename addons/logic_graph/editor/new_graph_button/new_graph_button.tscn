@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1mw3im4o8l8p"]
+
+[ext_resource type="Script" path="res://addons/logic_graph/editor/new_graph_button/new_graph_button.gd" id="1_fx23j"]
+
+[node name="NewGraphButton" type="Button"]
+text = "New Graph"
+script = ExtResource("1_fx23j")
+
+[node name="ConfirmDiscardDialog" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+size = Vector2i(708, 83)
+unresizable = true
+dialog_text = "Are you sure you want to start a new LogicGraph? Any unsaved changes will be discarded!"
+
+[node name="CreateGraphDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+title = "Create New Graph"
+size = Vector2i(500, 500)
+filters = PackedStringArray("*.tres")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="confirmed" from="ConfirmDiscardDialog" to="." method="_on_confirm_discard_dialog_confirmed"]
+[connection signal="file_selected" from="CreateGraphDialog" to="." method="_on_create_graph_dialog_file_selected"]
