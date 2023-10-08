@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://cy2ne6mqu7hbb"]
+[gd_scene load_steps=4 format=3 uid="uid://cy2ne6mqu7hbb"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_5q0kq"]
-[ext_resource type="Script" path="res://addons/logic_graph/container/logic_graph_container.gd" id="2_m8aqc"]
+[ext_resource type="Script" path="res://addons/logic_graph/container/container.gd" id="2_5tr7v"]
+[ext_resource type="Resource" uid="uid://dlp4wm3fy0m7i" path="res://test.tres" id="3_ht6w6"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_5q0kq")
@@ -48,7 +49,8 @@ size_flags_vertical = 1
 visible_characters_behavior = 1
 
 [node name="LogicGraphContainer" type="CanvasLayer" parent="."]
-script = ExtResource("2_m8aqc")
+script = ExtResource("2_5tr7v")
+data = ExtResource("3_ht6w6")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

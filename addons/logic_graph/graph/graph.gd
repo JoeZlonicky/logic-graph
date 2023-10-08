@@ -3,6 +3,8 @@ class_name LogicGraph
 extends GraphEdit
 
 
+signal modified
+
 const START_NODE_SCENE: PackedScene = preload("res://addons/logic_graph/nodes/start/start_node.tscn")
 const START_NODE_DEFAULT_POSITION := Vector2(200, 250)
 
@@ -22,6 +24,9 @@ func add_node(node_scene: PackedScene, position_offset: Vector2 = Vector2.ZERO,
 	node_map[node.name] = node
 	node.position_offset = position_offset
 	node.close_request.connect(_on_delete_nodes_request.bind([node.name]))
+	node.modified.connect(_on_node_modified)
+	
+	modified.emit()
 	return node
 
 
@@ -31,6 +36,7 @@ func remove_node(node_name: StringName) -> void:
 	node_map.erase(node_name)
 	remove_child(node)
 	node.queue_free()
+	modified.emit()
 
 
 func add_start_node() -> void:
@@ -45,9 +51,7 @@ func clear_all_nodes_and_connections() -> void:
 	clear_connections()
 	for child in get_children():
 		if child is LogicGraphNode:
-			node_map.erase(child.name)
-			remove_child(child)
-			child.queue_free()
+			remove_node(child.name)
 
 
 func start() -> void:
@@ -129,9 +133,15 @@ func _on_connection_request(from_node: StringName, from_port: int, to_node: Stri
 	connect_node(from_node, from_port, to_node, to_port)
 	var node: LogicGraphNode = node_map[from_node]
 	node.add_outward_connection(from_port, to_node, to_port)
+	modified.emit()
 
 
 func _on_disconnection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
 	disconnect_node(from_node, from_port, to_node, to_port)
 	var node: LogicGraphNode = node_map[from_node]
 	node.remove_outward_connection(from_port, to_node, to_port)
+	modified.emit()
+
+
+func _on_node_modified() -> void:
+	modified.emit()

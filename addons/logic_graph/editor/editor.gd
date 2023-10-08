@@ -58,15 +58,21 @@ func reset_graph() -> void:
 
 
 func new_graph(path: String) -> void:
-	_set_open_file_path(path)
 	reset_graph()
 	reset_view()
 	set_graph_enabled(true)
+	_set_open_file_path(path)
+	has_unsaved_changes = false
 
 
 func save_open_graph() -> void:
-	if graph.visible:
-		save_graph(open_file_path)
+	if graph.visible == false:
+		return
+	
+	if !has_unsaved_changes and FileAccess.file_exists(open_file_path):
+		return
+	
+	save_graph(open_file_path)
 
 
 func save_graph(path: String) -> void:
@@ -86,6 +92,7 @@ func save_graph(path: String) -> void:
 		return
 	
 	_set_open_file_path(path)
+	has_unsaved_changes = false
 	print("Saved logic graph")
 
 
@@ -99,16 +106,23 @@ func load_graph(path: String) -> void:
 	_set_open_file_path(path)
 	set_graph_enabled(true)
 	reset_view()
+	has_unsaved_changes = false
 	print("Loaded logic graph")
 
 
 func close_graph() -> void:
 	reset_graph()
 	set_graph_enabled(false)
+	_set_open_file_path("")
+	has_unsaved_changes = false
 
 
 func mark_unsaved_changes() -> void:
+	if has_unsaved_changes:
+		return
+	
 	open_file_label.text = "*" + open_file_label.text
+	has_unsaved_changes = true
 
 
 func _set_open_file_path(path: String) -> void:

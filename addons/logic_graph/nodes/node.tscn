@@ -18,4 +18,5 @@ grow_vertical = 2
 title = "Node"
 script = ExtResource("1_4sxur")
 
+[connection signal="dragged" from="." to="." method="_on_dragged"]
 [connection signal="resize_request" from="." to="." method="_on_resize_request"]

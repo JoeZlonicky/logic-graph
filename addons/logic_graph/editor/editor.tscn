@@ -89,3 +89,4 @@ dialog_text = "Failed to load logic graph"
 [connection signal="confirmed" from="VBoxContainer/Banner/Buttons/ClearButton" to="." method="reset_graph"]
 [connection signal="confirmed" from="VBoxContainer/Banner/Buttons/CloseGraphButton" to="." method="close_graph"]
 [connection signal="gui_input" from="VBoxContainer/Graph" to="." method="_on_graph_gui_input"]
+[connection signal="modified" from="VBoxContainer/Graph" to="." method="mark_unsaved_changes"]

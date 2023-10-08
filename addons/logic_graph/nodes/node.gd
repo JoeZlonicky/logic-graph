@@ -3,6 +3,8 @@ class_name LogicGraphNode
 extends GraphNode
 
 
+signal modified
+
 var outward_connections: Array[LogicGraphNodeConnectionData] = []
 
 
@@ -34,9 +36,10 @@ func get_first_connection() -> StringName:
 
 func _on_resize_request(new_minsize: Vector2) -> void:
 	size = new_minsize
+	modified.emit()
 
 
-func add_outward_connection(from_port: int, to_node: StringName, to_port):
+func add_outward_connection(from_port: int, to_node: StringName, to_port: int):
 	outward_connections.append(LogicGraphNodeConnectionData.new(from_port, to_node, to_port))
 
 
@@ -46,3 +49,7 @@ func remove_outward_connection(from_port: int, to_node: StringName, to_port: int
 		if c.from_port == from_port and c.to_node == to_node and c.to_port == to_port:
 			outward_connections.remove_at(i)
 			break
+
+
+func _on_dragged(_from: Vector2, _to: Vector2) -> void:
+	modified.emit()

@@ -27,3 +27,5 @@ theme_override_font_sizes/font_size = 20
 placeholder_text = "Dialogue text..."
 wrap_mode = 1
 scroll_fit_content_height = true
+
+[connection signal="text_changed" from="TextEdit" to="." method="_on_text_edit_text_changed"]

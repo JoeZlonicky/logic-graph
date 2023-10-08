@@ -26,3 +26,7 @@ func _on_game_next_dialogue():
 		game.close_dialogue()
 	
 	get_graph().transition(next)
+
+
+func _on_text_edit_text_changed():
+	modified.emit()
