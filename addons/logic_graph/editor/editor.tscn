@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://3dshfiiu6peo"]
+[gd_scene load_steps=9 format=3 uid="uid://3dshfiiu6peo"]
 
 [ext_resource type="Script" path="res://addons/logic_graph/editor/editor.gd" id="1_njewq"]
 [ext_resource type="PackedScene" uid="uid://c1mw3im4o8l8p" path="res://addons/logic_graph/editor/new_graph_button/new_graph_button.tscn" id="2_is6tq"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bbsontw3yp5dc" path="res://addons/logic_graph/editor/save_as_button/save_as_button.tscn" id="4_uyg6t"]
 [ext_resource type="PackedScene" uid="uid://d1nao5m28hg0d" path="res://addons/logic_graph/editor/clear_button/clear_button.tscn" id="5_jru7q"]
 [ext_resource type="PackedScene" uid="uid://dcmacsl8fulaw" path="res://addons/logic_graph/editor/close_graph_button/close_graph_button.tscn" id="6_kybo0"]
+[ext_resource type="PackedScene" uid="uid://df0hyvlukovmf" path="res://addons/logic_graph/editor/add_node_context_menu/add_node_content_menu.tscn" id="8_6ggu3"]
 
 [node name="LogicGraphEditor" type="Control"]
 layout_mode = 3
@@ -81,6 +82,10 @@ dialog_text = "Failed to save logic graph"
 [node name="LoadFailedDialog" type="AcceptDialog" parent="."]
 unique_name_in_owner = true
 dialog_text = "Failed to load logic graph"
+
+[node name="AddNodeContentMenu" parent="." instance=ExtResource("8_6ggu3")]
+unique_name_in_owner = true
+visible = false
 
 [connection signal="path_chosen" from="VBoxContainer/Banner/Buttons/NewGraphButton" to="." method="new_graph"]
 [connection signal="path_chosen" from="VBoxContainer/Banner/Buttons/LoadButton" to="." method="load_graph"]

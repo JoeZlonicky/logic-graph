@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://df0hyvlukovmf"]
+
+[ext_resource type="Script" path="res://addons/logic_graph/editor/add_node_context_menu/add_node_content_menu.gd" id="1_83ww7"]
+
+[node name="AddNodeContentMenu" type="PopupMenu"]
+visible = true
+script = ExtResource("1_83ww7")
+
+[connection signal="index_pressed" from="." to="." method="_on_index_pressed"]

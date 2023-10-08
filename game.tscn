@@ -1,8 +1,57 @@
-[gd_scene load_steps=4 format=3 uid="uid://cy2ne6mqu7hbb"]
+[gd_scene load_steps=12 format=3 uid="uid://cy2ne6mqu7hbb"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_5q0kq"]
 [ext_resource type="Script" path="res://addons/logic_graph/container/container.gd" id="2_5tr7v"]
-[ext_resource type="Resource" uid="uid://dlp4wm3fy0m7i" path="res://test.tres" id="3_ht6w6"]
+[ext_resource type="Script" path="res://addons/logic_graph/nodes/node_connection_data.gd" id="3_40vtx"]
+[ext_resource type="Script" path="res://addons/logic_graph/nodes/node_data.gd" id="4_sdlen"]
+[ext_resource type="Script" path="res://addons/logic_graph/graph/graph_data.gd" id="5_utnvb"]
+
+[sub_resource type="Resource" id="Resource_w3s1i"]
+script = ExtResource("3_40vtx")
+from_port = 0
+to_node = &"Node2"
+to_port = 0
+
+[sub_resource type="Resource" id="Resource_fscho"]
+script = ExtResource("4_sdlen")
+name = &"Node1"
+position_offset = Vector2(175, 225)
+size = Vector2(74, 54)
+custom_data = {}
+type_uid_path = "uid://dp6lsri4xknmh"
+out_connections = Array[ExtResource("3_40vtx")]([SubResource("Resource_w3s1i")])
+
+[sub_resource type="Resource" id="Resource_12yha"]
+script = ExtResource("4_sdlen")
+name = &"Node3"
+position_offset = Vector2(625, 225)
+size = Vector2(300, 155)
+custom_data = {
+"text": ""
+}
+type_uid_path = "uid://c76ududrabvoh"
+out_connections = Array[ExtResource("3_40vtx")]([])
+
+[sub_resource type="Resource" id="Resource_w01yf"]
+script = ExtResource("3_40vtx")
+from_port = 0
+to_node = &"Node3"
+to_port = 0
+
+[sub_resource type="Resource" id="Resource_qmkbp"]
+script = ExtResource("4_sdlen")
+name = &"Node2"
+position_offset = Vector2(275, 100)
+size = Vector2(300, 155)
+custom_data = {
+"text": ""
+}
+type_uid_path = "uid://c76ududrabvoh"
+out_connections = Array[ExtResource("3_40vtx")]([SubResource("Resource_w01yf")])
+
+[sub_resource type="Resource" id="Resource_blnuw"]
+script = ExtResource("5_utnvb")
+node_data = Array[ExtResource("4_sdlen")]([SubResource("Resource_fscho"), SubResource("Resource_12yha"), SubResource("Resource_qmkbp")])
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_5q0kq")
@@ -50,7 +99,7 @@ visible_characters_behavior = 1
 
 [node name="LogicGraphContainer" type="CanvasLayer" parent="."]
 script = ExtResource("2_5tr7v")
-data = ExtResource("3_ht6w6")
+data = SubResource("Resource_blnuw")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

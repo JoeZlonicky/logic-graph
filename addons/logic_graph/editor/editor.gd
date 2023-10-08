@@ -15,6 +15,7 @@ var has_unsaved_changes: bool = false
 @onready var open_file_label: Label = %OpenFileLabel
 @onready var save_failed_dialog: AcceptDialog = %SaveFailedDialog
 @onready var load_failed_dialog: AcceptDialog = %LoadFailedDialog
+@onready var add_node_context_menu: LogicGraphAddNodeContextMenu = %AddNodeContentMenu
 
 @onready var enable_only_for_active_graph: Array = [
 	%SaveButton,
@@ -35,7 +36,11 @@ func _on_graph_gui_input(event: InputEvent) -> void:
 			var spawn_position: Vector2 = mouse_pos + graph.scroll_offset - graph.global_position
 			spawn_position /= graph.zoom
 			
-			graph.add_node(DIALOGUE_NODE_SCENE, spawn_position)
+			add_node_context_menu.popup(Rect2(mouse_pos, Vector2(200, 200)))
+			if add_node_context_menu.node_scene_chosen.is_connected(graph.add_node):
+				add_node_context_menu.node_scene_chosen.disconnect(graph.add_node)
+			add_node_context_menu.node_scene_chosen.connect(graph.add_node.bind(spawn_position),
+				CONNECT_ONE_SHOT)
 
 
 func set_graph_enabled(enable: bool = true) -> void:

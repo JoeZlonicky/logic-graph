@@ -1,69 +1,52 @@
-[gd_resource type="Resource" script_class="LogicGraphData" load_steps=11 format=3 uid="uid://dlp4wm3fy0m7i"]
+[gd_resource type="Resource" script_class="LogicGraphData" load_steps=9 format=3 uid="uid://c1joybg40dtdi"]
 
 [ext_resource type="Script" path="res://addons/logic_graph/nodes/node_connection_data.gd" id="1_7kyaj"]
 [ext_resource type="Script" path="res://addons/logic_graph/nodes/node_data.gd" id="1_k4b3f"]
 [ext_resource type="Script" path="res://addons/logic_graph/graph/graph_data.gd" id="2_gp8ya"]
 
-[sub_resource type="Resource" id="Resource_t4f1m"]
+[sub_resource type="Resource" id="Resource_w3s1i"]
 script = ExtResource("1_7kyaj")
 from_port = 0
 to_node = &"Node2"
 to_port = 0
 
-[sub_resource type="Resource" id="Resource_b028p"]
+[sub_resource type="Resource" id="Resource_6t7dj"]
 script = ExtResource("1_k4b3f")
 name = &"Node1"
-position_offset = Vector2(200, 250)
+position_offset = Vector2(175, 225)
 size = Vector2(74, 54)
 custom_data = {}
 type_uid_path = "uid://dp6lsri4xknmh"
-out_connections = Array[ExtResource("1_7kyaj")]([SubResource("Resource_t4f1m")])
+out_connections = Array[ExtResource("1_7kyaj")]([SubResource("Resource_w3s1i")])
 
-[sub_resource type="Resource" id="Resource_ev0ut"]
-script = ExtResource("1_7kyaj")
-from_port = 0
-to_node = &"Node4"
-to_port = 0
-
-[sub_resource type="Resource" id="Resource_5nfsv"]
+[sub_resource type="Resource" id="Resource_ugtmd"]
 script = ExtResource("1_k4b3f")
 name = &"Node3"
-position_offset = Vector2(809.401, 218.783)
+position_offset = Vector2(625, 225)
 size = Vector2(300, 155)
 custom_data = {
-"text": "And hi, Persia"
-}
-type_uid_path = "uid://c76ududrabvoh"
-out_connections = Array[ExtResource("1_7kyaj")]([SubResource("Resource_ev0ut")])
-
-[sub_resource type="Resource" id="Resource_lwmjf"]
-script = ExtResource("1_k4b3f")
-name = &"Node4"
-position_offset = Vector2(1250, 250)
-size = Vector2(300, 155)
-custom_data = {
-"text": "And don't forget about Zelda!"
+"text": ""
 }
 type_uid_path = "uid://c76ududrabvoh"
 out_connections = Array[ExtResource("1_7kyaj")]([])
 
-[sub_resource type="Resource" id="Resource_k5qhd"]
+[sub_resource type="Resource" id="Resource_w01yf"]
 script = ExtResource("1_7kyaj")
 from_port = 0
 to_node = &"Node3"
 to_port = 0
 
-[sub_resource type="Resource" id="Resource_55ncu"]
+[sub_resource type="Resource" id="Resource_cuw8b"]
 script = ExtResource("1_k4b3f")
 name = &"Node2"
-position_offset = Vector2(375, 175)
+position_offset = Vector2(275, 100)
 size = Vector2(300, 155)
 custom_data = {
-"text": "Hi, Mom!"
+"text": ""
 }
 type_uid_path = "uid://c76ududrabvoh"
-out_connections = Array[ExtResource("1_7kyaj")]([SubResource("Resource_k5qhd")])
+out_connections = Array[ExtResource("1_7kyaj")]([SubResource("Resource_w01yf")])
 
 [resource]
 script = ExtResource("2_gp8ya")
-node_data = Array[ExtResource("1_k4b3f")]([SubResource("Resource_b028p"), SubResource("Resource_5nfsv"), SubResource("Resource_lwmjf"), SubResource("Resource_55ncu")])
+node_data = Array[ExtResource("1_k4b3f")]([SubResource("Resource_6t7dj"), SubResource("Resource_ugtmd"), SubResource("Resource_cuw8b")])
