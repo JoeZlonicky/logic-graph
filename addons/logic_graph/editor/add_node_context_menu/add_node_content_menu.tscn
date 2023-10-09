@@ -4,6 +4,9 @@
 
 [node name="AddNodeContentMenu" type="PopupMenu"]
 visible = true
+item_count = 2
+item_0/text = "Dialogue"
+item_0/id = 0
+item_1/text = "Folder"
+item_1/id = 1
 script = ExtResource("1_83ww7")
-
-[connection signal="index_pressed" from="." to="." method="_on_index_pressed"]

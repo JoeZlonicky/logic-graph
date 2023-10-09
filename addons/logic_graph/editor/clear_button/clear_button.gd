@@ -1,8 +1,9 @@
 @tool
+class_name LogicGraphEditorClearButton
 extends Button
 
 
-signal confirmed
+signal clear_triggered
 
 @onready var confirm_dialog: ConfirmationDialog = %ConfirmDialog
 
@@ -12,4 +13,4 @@ func _on_pressed() -> void:
 
 
 func _on_confirm_dialog_confirmed() -> void:
-	confirmed.emit()
+	clear_triggered.emit()

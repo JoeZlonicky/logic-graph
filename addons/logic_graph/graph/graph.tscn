@@ -11,7 +11,6 @@ grow_vertical = 2
 size_flags_vertical = 3
 right_disconnects = true
 snap_distance = 25
-arrange_nodes_button_hidden = true
 script = ExtResource("1_inlnt")
 
 [connection signal="connection_request" from="." to="." method="_on_connection_request"]

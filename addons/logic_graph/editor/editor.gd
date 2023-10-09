@@ -3,16 +3,12 @@ class_name LogicGraphEditor
 extends Control
 
 
-const DIALOGUE_NODE_SCENE: PackedScene = preload("res://addons/logic_graph/nodes/dialogue/dialogue.tscn")
-
 var open_file_path: String = ""
 var has_unsaved_changes: bool = false
 
 @onready var graph: LogicGraph = %Graph
-
-@onready var new_graph_button: LogicGraphEditorNewButton = %NewGraphButton
-@onready var load_button: LogicGraphEditorLoadButton = %LoadButton
 @onready var open_file_label: Label = %OpenFileLabel
+
 @onready var save_failed_dialog: AcceptDialog = %SaveFailedDialog
 @onready var load_failed_dialog: AcceptDialog = %LoadFailedDialog
 @onready var add_node_context_menu: LogicGraphAddNodeContextMenu = %AddNodeContentMenu
@@ -24,29 +20,29 @@ var has_unsaved_changes: bool = false
 	%CloseGraphButton
 ]
 
+@onready var should_confirm_if_unsaved_changes: Array = [
+	%NewGraphButton,
+	%LoadButton,
+	%CloseGraphButton
+]
+
 
 func _ready() -> void:
 	set_graph_enabled(false)
+	remove_unsaved_changes_mark()
+	add_node_context_menu.add_entries(LogicGraphNodeList.get_nodes())
+	for button in should_confirm_if_unsaved_changes:
+		assert("should_confirm" in button, "Button is missing should_confirm property")
 
 
 func _on_graph_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
-			var mouse_pos: Vector2 = get_viewport().get_mouse_position()
-			var spawn_position: Vector2 = mouse_pos + graph.scroll_offset - graph.global_position
-			spawn_position /= graph.zoom
-			
-			add_node_context_menu.popup(Rect2(mouse_pos, Vector2(200, 200)))
-			if add_node_context_menu.node_scene_chosen.is_connected(graph.add_node):
-				add_node_context_menu.node_scene_chosen.disconnect(graph.add_node)
-			add_node_context_menu.node_scene_chosen.connect(graph.add_node.bind(spawn_position),
-				CONNECT_ONE_SHOT)
+			_spawn_add_node_context_menu_at_mouse_position()
 
 
 func set_graph_enabled(enable: bool = true) -> void:
 	graph.visible = enable
-	new_graph_button.should_confirm = enable
-	load_button.should_confirm = enable
 	for button in enable_only_for_active_graph:
 		button.disabled = !enable
 
@@ -67,7 +63,7 @@ func new_graph(path: String) -> void:
 	reset_view()
 	set_graph_enabled(true)
 	_set_open_file_path(path)
-	has_unsaved_changes = false
+	remove_unsaved_changes_mark()
 
 
 func save_open_graph() -> void:
@@ -97,7 +93,7 @@ func save_graph(path: String) -> void:
 		return
 	
 	_set_open_file_path(path)
-	has_unsaved_changes = false
+	remove_unsaved_changes_mark()
 	print("Saved logic graph")
 
 
@@ -111,7 +107,7 @@ func load_graph(path: String) -> void:
 	_set_open_file_path(path)
 	set_graph_enabled(true)
 	reset_view()
-	has_unsaved_changes = false
+	remove_unsaved_changes_mark()
 	print("Loaded logic graph")
 
 
@@ -119,15 +115,36 @@ func close_graph() -> void:
 	reset_graph()
 	set_graph_enabled(false)
 	_set_open_file_path("")
-	has_unsaved_changes = false
+	remove_unsaved_changes_mark()
 
 
 func mark_unsaved_changes() -> void:
 	if has_unsaved_changes:
 		return
 	
-	open_file_label.text = "*" + open_file_label.text
+	open_file_label.text = "*" + open_file_path.get_file()
 	has_unsaved_changes = true
+	for button in should_confirm_if_unsaved_changes:
+		button.should_confirm = true
+
+
+func remove_unsaved_changes_mark() -> void:
+	open_file_label.text = open_file_path.get_file()
+	has_unsaved_changes = false
+	for button in should_confirm_if_unsaved_changes:
+		button.should_confirm = false
+
+
+func _spawn_add_node_context_menu_at_mouse_position() -> void:
+	var mouse_pos: Vector2 = get_viewport().get_mouse_position()
+	var spawn_position: Vector2 = mouse_pos + graph.scroll_offset - graph.global_position
+	spawn_position /= graph.zoom
+	
+	add_node_context_menu.popup(Rect2(mouse_pos, Vector2(200, 200)))
+	if add_node_context_menu.node_scene_chosen.is_connected(graph.add_node):
+		add_node_context_menu.node_scene_chosen.disconnect(graph.add_node)
+	add_node_context_menu.node_scene_chosen.connect(graph.add_node.bind(spawn_position),
+		CONNECT_ONE_SHOT)
 
 
 func _set_open_file_path(path: String) -> void:

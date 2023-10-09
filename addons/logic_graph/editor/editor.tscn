@@ -61,6 +61,7 @@ layout_mode = 2
 [node name="CloseGraphButton" parent="VBoxContainer/Banner/Buttons" instance=ExtResource("6_kybo0")]
 unique_name_in_owner = true
 layout_mode = 2
+should_confirm = false
 
 [node name="Control" type="Control" parent="VBoxContainer/Banner/Buttons"]
 layout_mode = 2
@@ -86,12 +87,14 @@ dialog_text = "Failed to load logic graph"
 [node name="AddNodeContentMenu" parent="." instance=ExtResource("8_6ggu3")]
 unique_name_in_owner = true
 visible = false
+item_0/text = "Folder"
+item_1/text = "Dialogue"
 
 [connection signal="path_chosen" from="VBoxContainer/Banner/Buttons/NewGraphButton" to="." method="new_graph"]
 [connection signal="path_chosen" from="VBoxContainer/Banner/Buttons/LoadButton" to="." method="load_graph"]
 [connection signal="pressed" from="VBoxContainer/Banner/Buttons/SaveButton" to="." method="save_open_graph"]
 [connection signal="path_chosen" from="VBoxContainer/Banner/Buttons/SaveAsButton" to="." method="save_graph"]
-[connection signal="confirmed" from="VBoxContainer/Banner/Buttons/ClearButton" to="." method="reset_graph"]
-[connection signal="confirmed" from="VBoxContainer/Banner/Buttons/CloseGraphButton" to="." method="close_graph"]
+[connection signal="clear_triggered" from="VBoxContainer/Banner/Buttons/ClearButton" to="." method="reset_graph"]
+[connection signal="close_triggered" from="VBoxContainer/Banner/Buttons/CloseGraphButton" to="." method="close_graph"]
 [connection signal="gui_input" from="VBoxContainer/Graph" to="." method="_on_graph_gui_input"]
 [connection signal="modified" from="VBoxContainer/Graph" to="." method="mark_unsaved_changes"]
